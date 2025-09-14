@@ -1,0 +1,30 @@
+name: "lab1"
+
+services:
+  db:
+    image: mysql:9.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    image: ghcr.io/nicomirandat/backend-node-docker-lab1-nimt:lab-1
+    build:
+      context: .       
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "4000:4000"
+
+volumes:
+  db_data:
+
